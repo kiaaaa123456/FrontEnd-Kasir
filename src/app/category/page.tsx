@@ -3,7 +3,7 @@ export const metadata = {
 };
 import AddCategory from "./addCategory";
 import DeleteCategory from "./deleteCategory";
-import UpdateCategory from "./updateCategory";
+import EditCategory from "./updateCategory";
 import axios from "axios";
 import Link from "next/link";
 import React from "react";
@@ -38,7 +38,7 @@ const CategoryList = async () => {
               <td>{index + 1}</td>
               <td>{category.name}</td>
               <td className="flex">
-                <UpdateCategory {...category}/>
+                <EditCategory {...category}/>
                 <DeleteCategory {...category}/>
               </td>
             </tr>

@@ -4,25 +4,36 @@ import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
-type Category = {
+type Meja = {
   id: number;
-  name: string;
+  nomor_meja: string;
+  kapasitas: string;
+  status: string;
 };
 
 const API_URL = "http://127.0.0.1:8000/api";
-const EditCategory = (category: Category) => {
+const EditMeja = (meja: Meja) => {
   const [modal, setModal] = useState(false);
-  const [name, setName] = useState(category.name);
+  const [nomor_meja, setNomorMeja] = useState(meja.nomor_meja);
+  const [kapasitas, setKapasitas] = useState(meja.kapasitas);
+  const [status, setStatus] = useState(meja.status);
   const [isMutating, setIsMutating] = useState(false);
   const router = useRouter();
   const handleChange = () => setModal(!modal);
   const handleUpdate = async (e: SyntheticEvent) => {
     e.preventDefault();
     setIsMutating(true);
-    let endpoint = `${API_URL}/category2/${category.id}`;
-    const data = { name: name };
+    let endpoint = `${API_URL}/meja/${meja.id}`;
+    const data = {
+      nomor_meja: nomor_meja,
+      kapasitas: kapasitas,
+      status: status,
+    };
     await axios.patch(endpoint, data);
-    setName("");
+
+    setNomorMeja("");
+    setKapasitas("");
+    setStatus("");
     setIsMutating(false);
     router.refresh();
     setModal(false);
@@ -42,16 +53,35 @@ const EditCategory = (category: Category) => {
 
       <div className="modal">
         <div className="modal-box">
-          <h3 className="font-bold text-lg"> Edit {category.name}</h3>
+          <h3 className="font-bold text-lg">
+            {" "}
+            Edit Nomor Meja {meja.nomor_meja}
+          </h3>
           <form onSubmit={handleUpdate}>
             <div className="form-control">
-              <label className="label font-bold">Title</label>
+              <label className="label font-bold">No Meja</label>
               <input
                 type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={nomor_meja}
+                onChange={(e) => setNomorMeja(e.target.value)}
                 className="input w-full input-bordered"
-                placeholder="Category Name"
+                placeholder="No Meja"
+              />
+              <label className="label font-bold">Kapasitas</label>
+              <input
+                type="text"
+                value={kapasitas}
+                onChange={(e) => setKapasitas(e.target.value)}
+                className="input w-full input-bordered"
+                placeholder="Kapasitas"
+              />
+              <label className="label font-bold">Status</label>
+              <input
+                type="text"
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
+                className="input w-full input-bordered"
+                placeholder="Status"
               />
             </div>
             <div className="modal-action">
@@ -74,4 +104,4 @@ const EditCategory = (category: Category) => {
     </div>
   );
 };
-export default EditCategory
+export default EditMeja;

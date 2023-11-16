@@ -9,28 +9,24 @@ type Category = {
   name: string;
 };
 
-export default function DeleteCategory(category:Category) {
+const API_URL = "http://127.0.0.1:8000/api";
+const DeleteCategory = (category: Category) => {
   const [modal, setModal] = useState(false);
+  const [name, setName] = useState("");
   const [isMutating, setIsMutating] = useState(false);
-
   const router = useRouter();
-
-  async function handleDelete(categoryId: number) {
-    
+  const handleChange = () => setModal(!modal);
+  const handleDelete = async (categoryId : Number) => {
     setIsMutating(true);
-    await fetch(`http://127.0.0.1:8000/api/category2${categoryId}`, {
-      method: "DELETE",
-    });
-    setIsMutating(false);
+    let params = {id : categoryId}
+    let endpoint =  `${API_URL}/category2/${categoryId}`;
+    const data = {name: name};
+    await axios.delete(endpoint);
 
+    setIsMutating(false);
     router.refresh();
     setModal(false);
   }
-
-  function handleChange() {
-    setModal(!modal);
-  }
-
   return (
     <div>
       <button className="btn btn-error btn-sm" onClick={handleChange}>
@@ -66,3 +62,4 @@ export default function DeleteCategory(category:Category) {
     </div>
   );
 }
+export default DeleteCategory;

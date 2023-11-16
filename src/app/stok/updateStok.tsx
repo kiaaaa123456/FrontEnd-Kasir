@@ -4,25 +4,32 @@ import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
-type Category = {
+type Stok = {
   id: number;
-  name: string;
+  menu_id: string;
+  jumlah: string;
 };
 
 const API_URL = "http://127.0.0.1:8000/api";
-const EditCategory = (category: Category) => {
+const EditStok = (stok: Stok) => {
   const [modal, setModal] = useState(false);
-  const [name, setName] = useState(category.name);
+  const [menu_id, setMenu_id] = useState(stok.menu_id);
+  const [jumlah, setJumlah] = useState(stok.jumlah);
   const [isMutating, setIsMutating] = useState(false);
   const router = useRouter();
   const handleChange = () => setModal(!modal);
   const handleUpdate = async (e: SyntheticEvent) => {
     e.preventDefault();
     setIsMutating(true);
-    let endpoint = `${API_URL}/category2/${category.id}`;
-    const data = { name: name };
+    let endpoint = `${API_URL}/stok/${stok.id}`;
+    const data = {
+      menu_id: menu_id,
+      jumlah: jumlah,
+    };
     await axios.patch(endpoint, data);
-    setName("");
+
+    setMenu_id("");
+    setJumlah("");
     setIsMutating(false);
     router.refresh();
     setModal(false);
@@ -42,16 +49,24 @@ const EditCategory = (category: Category) => {
 
       <div className="modal">
         <div className="modal-box">
-          <h3 className="font-bold text-lg"> Edit {category.name}</h3>
+          <h3 className="font-bold text-lg"> Edit Jumlah Stok {stok.jumlah}</h3>
           <form onSubmit={handleUpdate}>
             <div className="form-control">
-              <label className="label font-bold">Title</label>
+              <label className="label font-bold">Menu ID</label>
               <input
                 type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={menu_id}
+                onChange={(e) => setMenu_id(e.target.value)}
                 className="input w-full input-bordered"
-                placeholder="Category Name"
+                placeholder="Menu ID"
+              />
+              <label className="label font-bold">Jumlah</label>
+              <input
+                type="text"
+                value={jumlah}
+                onChange={(e) => setJumlah(e.target.value)}
+                className="input w-full input-bordered"
+                placeholder="Jumlah"
               />
             </div>
             <div className="modal-action">
@@ -74,4 +89,4 @@ const EditCategory = (category: Category) => {
     </div>
   );
 };
-export default EditCategory
+export default EditStok;

@@ -4,25 +4,29 @@ import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
-type Category = {
+type Jenis = {
   id: number;
-  name: string;
+  kategori_id: string;
+  nama_jenis: string;
 };
 
 const API_URL = "http://127.0.0.1:8000/api";
-const EditCategory = (category: Category) => {
+const EditJenis = (jenis: Jenis) => {
   const [modal, setModal] = useState(false);
-  const [name, setName] = useState(category.name);
+  const [kategori_id, setKategori_id] = useState(jenis.kategori_id);
+  const [nama_jenis, setNamaJenis] = useState(jenis.nama_jenis);
   const [isMutating, setIsMutating] = useState(false);
   const router = useRouter();
   const handleChange = () => setModal(!modal);
   const handleUpdate = async (e: SyntheticEvent) => {
     e.preventDefault();
     setIsMutating(true);
-    let endpoint = `${API_URL}/category2/${category.id}`;
-    const data = { name: name };
+    let endpoint = `${API_URL}/jenis/${jenis.id}`;
+    const data = { kategori_id: kategori_id, nama_jenis: nama_jenis };
     await axios.patch(endpoint, data);
-    setName("");
+
+    setKategori_id("");
+    setNamaJenis("");
     setIsMutating(false);
     router.refresh();
     setModal(false);
@@ -42,16 +46,24 @@ const EditCategory = (category: Category) => {
 
       <div className="modal">
         <div className="modal-box">
-          <h3 className="font-bold text-lg"> Edit {category.name}</h3>
+          <h3 className="font-bold text-lg"> Edit {jenis.nama_jenis}</h3>
           <form onSubmit={handleUpdate}>
             <div className="form-control">
-              <label className="label font-bold">Title</label>
+              <label className="label font-bold">Kategori ID</label>
               <input
                 type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={kategori_id}
+                onChange={(e) => setKategori_id(e.target.value)}
                 className="input w-full input-bordered"
-                placeholder="Category Name"
+                placeholder="Kategori ID"
+              />
+              <label className="label font-bold">Nama Jenis</label>
+              <input
+                type="text"
+                value={nama_jenis}
+                onChange={(e) => setNamaJenis(e.target.value)}
+                className="input w-full input-bordered"
+                placeholder="Nama Jenis"
               />
             </div>
             <div className="modal-action">
@@ -74,4 +86,4 @@ const EditCategory = (category: Category) => {
     </div>
   );
 };
-export default EditCategory
+export default EditJenis;
