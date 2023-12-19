@@ -1,11 +1,11 @@
 import React from "react";
-import Link from "next/link";
-import MainHeader from "./MainHeader";
+import Link from "next/link"
+import MainHeader from "./MainHeader"
 
 const MainLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="bg-slate-100 w-full h-screen flex flex-row">
-      <MainHeader/>
+    <div className="bg-slate-200 w-full h-screen flex flex-row">
+      <MainHeader />
       {children}
     </div>
   );
